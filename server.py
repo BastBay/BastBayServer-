@@ -1,4 +1,9 @@
-# server_update.py
+import socket
+
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
+print("✅ Server is running at IP:", ip_address)
+#server_update.py
 import os
 from datetime import datetime
 

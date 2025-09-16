@@ -1,35 +1,52 @@
-# server.py
+# server_update.py
 import os
+from datetime import datetime
 
-# পাসওয়ার্ড সেট
-PASSWORD = "5683"
+# Messages লগ ফাইল
+MESSAGE_LOG = "messages.txt"
+
+def log_message(msg):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    entry = f"[{timestamp}] {msg}"
+    with open(MESSAGE_LOG, "a") as f:
+        f.write(entry + "\n")
+    print(f"✅ Message logged: {entry}")
+
+def view_messages():
+    if os.path.exists(MESSAGE_LOG):
+        print("\n--- All Messages ---")
+        with open(MESSAGE_LOG, "r") as f:
+            print(f.read())
+        print("-------------------")
+    else:
+        print("No messages yet.")
 
 def main():
-    print("=== Welcome to your Server Update System ===")
-    user_pass = input("Enter password to continue: ")
+    print("=== Server Update: Message System Active ===")
     
-    if user_pass != PASSWORD:
-        print("❌ Incorrect password! Access denied.")
-        return
-    
-    print("✅ Password correct. You can now update the server.")
-    print("Type your Python code below (type 'END' in a new line to finish):")
-
-    # ইউজারের কোড ইনপুট নেওয়া
-    code_lines = []
     while True:
-        line = input()
-        if line.strip().upper() == "END":
+        print("\nOptions:")
+        print("1. Log a message")
+        print("2. View all messages")
+        print("3. Exit")
+        choice = input("Enter your choice (1/2/3): ").strip()
+        
+        if choice == "1":
+            msg = input("Enter your message: ").strip()
+            if msg:
+                log_message(msg)
+            else:
+                print("❌ Empty message, not logged.")
+        
+        elif choice == "2":
+            view_messages()
+        
+        elif choice == "3":
+            print("Exiting server update system. Goodbye!")
             break
-        code_lines.append(line)
-    
-    # কোডকে server_update.py তে সেভ করা
-    update_file = "server_update.py"
-    with open(update_file, "w") as f:
-        f.write("\n".join(code_lines))
-    
-    print(f"✅ Update saved successfully to {update_file}!")
-    print("You can now run or deploy this update as needed.")
+        
+        else:
+            print("❌ Invalid choice! Please select 1, 2 or 3.")
 
 if __name__ == "__main__":
     main()
